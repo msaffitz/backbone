@@ -198,9 +198,6 @@
       if (attrs.attributes) attrs = attrs.attributes;
       var now = this.attributes, escaped = this._escapedAttributes;
 
-      // Run validation.
-      if (!options.silent && this.validate && !this._performValidation(attrs, options)) return false;
-
       // Check for changes of `id`.
       if (this.idAttribute in attrs) this.id = attrs[this.idAttribute];
 
@@ -232,11 +229,6 @@
       options || (options = {});
       var value = this.attributes[attr];
 
-      // Run validation.
-      var validObj = {};
-      validObj[attr] = void 0;
-      if (!options.silent && this.validate && !this._performValidation(validObj, options)) return false;
-
       // Remove the attribute.
       delete this.attributes[attr];
       delete this._escapedAttributes[attr];
@@ -255,11 +247,6 @@
       options || (options = {});
       var attr;
       var old = this.attributes;
-
-      // Run validation.
-      var validObj = {};
-      for (attr in old) validObj[attr] = void 0;
-      if (!options.silent && this.validate && !this._performValidation(validObj, options)) return false;
 
       this.attributes = {};
       this._escapedAttributes = {};
@@ -568,7 +555,6 @@
       if (!(model instanceof Backbone.Model)) {
         var attrs = model;
         model = new this.model(attrs, {collection: this});
-        if (model.validate && !model._performValidation(attrs, options)) model = false;
       } else if (!model.collection) {
         model.collection = this;
       }
